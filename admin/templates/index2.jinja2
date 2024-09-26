@@ -1,0 +1,120 @@
+{% extends "admin/layout/default.jinja2" %}
+
+{% block css %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/codemirror.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/theme/dracula.min.css">
+<style>
+    .form-label {
+        font-weight: bold;
+        margin-bottom: 0.5rem;
+    }
+
+    .form-check-input {
+        margin-right: 0.5rem;
+    }
+
+    .textarea-wrapper {
+        position: relative;
+    }
+
+    textarea {
+        width: 100%;
+        resize: none;
+        padding: 0.5rem;
+        border: 1px solid #ccc;
+        border-radius: 0.25rem;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+</style>
+{% endblock css %}
+
+{% block javascript %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.32.8/ace.min.js"
+    integrity="sha512-3c17/omJ/iHIFqPLIThx7TXuOuu1+umsw5SfeZhJxoYbCwTdnqbIlgnAUQOUBxvi6pl1Pu131NkC4ga0cliHHw=="
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="{{ url_for('generator.static', filename='js/generator.js') }}"></script>
+{% endblock javascript %}
+
+{% block content %}
+<div class="page-body pt-6">
+    <div class="container-xl">
+        <div class="row">
+            <div class="col-md-8 mx-auto">
+                <form id="generator_form" method="post">
+                    <div class="mb-4">
+                        <label class="form-label">{{ _('Select Table') }}</label>
+                        <select class="form-control table_name" name="table_name" id="table_name">
+                            <option value="-1" selected>{{ _('Please Select A Table') }}</option>
+                            {% for table in tables_list %}
+                            <option value="{{ table }}">{{ table }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="form-label">{{ _('Table fields shown in list') }}</label>
+                        <div class="inline" id="table_fields"></div>
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="form-label">{{ _('Controller') }}</label>
+                        <div id="controllers">
+                            {% for action in ['Index', 'Add', 'Edit', 'Delete'] %}
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input controller" type="checkbox"
+                                    id="controller_{{ action|lower }}_checked"
+                                    name="controller_{{ action|lower }}_checked" value="{{ action|lower }}" {% if
+                                    action=='Index' or action=='Delete' %}disabled{% endif %} checked>
+                                <label class="form-check-label" for="controller_{{ action|lower }}_checked">{{ _(action)
+                                    }}</label>
+                            </div>
+                            {% endfor %}
+
+
+                        </div>
+                    </div>
+
+                    <div class="mb-4">
+                        <div class="form-check">
+                            <input class="form-check-input generate_menu" type="checkbox" id="generate_menu_checked"
+                                name="generate_menu_checked" value="1" checked>
+                            <label class="form-check-label" for="generate_menu_checked">{{ _('Should the menu be
+                                generated?') }}</label>
+                        </div>
+                    </div>
+
+                    {% for field in ['Model Code', 'Template Index Code', 'Template Add Code', 'Template Edit Code',
+                    'Views Code', 'API Code', 'Schema Code', 'Js Code'] %}
+                    <div class="mb-4">
+                        <label class="form-label">
+                            <input class="form-check-input" type="checkbox"
+                                id="{{ field|lower|replace(' ', '_') }}_checked"
+                                name="{{ field|lower|replace(' ', '_') }}_checked" value="1" {% if field !='API Code' %}
+                                checked {% endif %}>
+
+                            {{ _(field) }}
+                        </label>
+                        <div class="textarea-wrapper">
+                            <textarea class="form-control" name="{{ field|lower|replace(' ', '_') }}"
+                                id="{{ field|lower|replace(' ', '_') }}" rows="10"></textarea>
+                        </div>
+                    </div>
+                    {% endfor %}
+
+
+                    <div class="mb-4">
+                        <label class="form-label">{{ _('Route Code') }} ({{ _('Copy the following addition and paste it
+                            into the route.py file.') }})</label>
+                        <div class="textarea-wrapper">
+                            <textarea class="form-control" name="route_code" id="route_code" rows="10"></textarea>
+                        </div>
+                    </div>
+
+                    <button type="button" form="generator_form" id="generator_button"
+                        class="btn btn-primary w-100 py-3">{{ _('Submit') }}</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}
