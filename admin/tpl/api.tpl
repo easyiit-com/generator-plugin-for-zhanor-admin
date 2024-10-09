@@ -105,7 +105,7 @@ class Api%%model_class_name%%Create(Resource):
         new_%%model_name%% = %%model_class_name%%(**data)
         db_session.add(new_%%model_name%%)
         db_session.commit()
-        return {"code": 1,"msg": "Created successfully", "data": new_%%model_name%%.to_dict()}, 201
+        return {"code": 1,"msg": "Created successfully", "data": new_%%model_name%%.to_dict()}, 200
      
 class Api%%model_class_name%%(Resource):
 

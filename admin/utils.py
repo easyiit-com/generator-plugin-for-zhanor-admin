@@ -446,15 +446,15 @@ class Generator:
                     input_field = f'<input class="form-control" type="{input_type}" id="{column_name}" name="{column_name}"  value="{{{{value.{column_name}}}}}" placeholder="{{{{_(\'{column_comment}\')}}}}"  {maxlength} {required}/>\n'
                 if (
                     column_name != "id"
-                    and column_name != "createtime"
-                    and column_name != "updatetime"
+                    and column_name != "created_at"
+                    and column_name != "updated_at"
                 ):
                     replace_template_add_tpl_form_body += f'<div class="mb-[20px]">\n    <label class="form-label" for="{column_name}" {required}>{{{{_(\'{button_text}\')}}}}</label>\n   {input_field}  </div>\n'
 
                 if column_name == "id":
                     replace_template_edit_tpl_form_body += f'<div class="mb-[20px]">\n    <label class="form-label" for="{column_name}" {required}>{{{{_(\'ID\')}}}}</label>\n   {input_field}  </div>\n'
                 else:
-                    if column_name != "createtime" and column_name != "updatetime":
+                    if column_name != "created_at" and column_name != "updated_at":
                         replace_template_edit_tpl_form_body += f'<div class="mb-[20px]">\n    <label class="form-label" for="{column_name}" {required}>{{{{_(\'{button_text}\')}}}}</label>\n   {input_field}  </div>\n'
                 if column_name == "id":
                     replace_template_index_tpl_table_ths += f'<th><input class="form-check-input m-0 align-middle select-all" type="checkbox" aria-label="Select invoice"></th><th><button class="table-sort" data-sort="sort-name">{{{{_(\'{button_text}\')}}}}</button></th>\n'
@@ -492,7 +492,7 @@ class Generator:
                     elif "switch" in column_name:
                         js_code += f'formData.append( \'{column_name}\', $( "#{column_name}" ).is(":checked") ? 1 : 0 );\n'
                     else:
-                        if column_name != "createtime" and column_name != "updatetime":
+                        if column_name != "created_at" and column_name != "updated_at":
                             js_code += f"formData.append( '{column_name}', $( \"#{column_name}\" ).val() );\n"
                 table_fields.append(column_name)
             data = {}

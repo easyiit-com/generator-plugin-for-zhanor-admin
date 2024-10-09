@@ -69,16 +69,16 @@ def add_or_edit_%%model_name%%_view():
                 return Response.error(msg="%%model_class_name%% not found.")
         else:
             %%model_name%% = %%model_class_name%%()
-            if hasattr(%%model_class_name%%, "createtime"):
-                %%model_name%%.createtime = now()
+            if hasattr(%%model_class_name%%, "created_at"):
+                %%model_name%%.created_at = now()
         for field, value in data.items():
-            if field not in ["id", "createtime", "updatetime"] and hasattr(%%model_name%%, field):
+            if field not in ["id", "created_at", "updated_at"] and hasattr(%%model_name%%, field):
                 if isinstance(value, list) and field.endswith("[]"): 
                     setattr(%%model_name%%, field[:-2], ','.join(map(str, value)))
                 else:
                     setattr(%%model_name%%, field, value)
-        if hasattr(%%model_class_name%%, "updatetime"):
-            %%model_name%%.updatetime = now()
+        if hasattr(%%model_class_name%%, "updated_at"):
+            %%model_name%%.updated_at = now()
 
         if not %%model_name%%_id:
             db_session.add(%%model_name%%)

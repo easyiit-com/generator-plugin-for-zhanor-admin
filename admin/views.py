@@ -15,14 +15,15 @@ from app.utils.defs import now
 # 创建蓝图
 bp = Blueprint("generator", __name__, url_prefix="/admin/generator", template_folder="templates", static_folder='static')
 
-@bp.route("/")
+@bp.route("")
 @admin_required
 def index():
     # 获取数据库引擎和表列表
+    title = "Generator"
     engine = get_db_engine()
     inspector = inspect(engine)
     tables_list = inspector.get_table_names()
-    return render_template("index2.jinja2", tables_list=tables_list)
+    return render_template("index2.jinja2", tables_list=tables_list,title=title)
 
 @bp.route("/all_table")
 @admin_required
@@ -176,8 +177,8 @@ def insert_admin_rules(table_name):
             menutype='addtabs',
             extend=None,
             model_name=model_name,  # 使用动态模型名称
-            createtime=now(),
-            updatetime=now(),
+            created_at=now(),
+            updated_at=now(),
             weigh=0,
             status='normal'
         )
@@ -200,8 +201,8 @@ def insert_admin_rules(table_name):
             menutype='addtabs',
             extend=None,
             model_name=model_name,
-            createtime=now(),
-            updatetime=now(),
+            created_at=now(),
+            updated_at=now(),
             weigh=0,
             status='normal'
         )
@@ -219,8 +220,8 @@ def insert_admin_rules(table_name):
             menutype='addtabs',
             extend=None,
             model_name=model_name,
-            createtime=now(),
-            updatetime=now(),
+            created_at=now(),
+            updated_at=now(),
             weigh=0,
             status='normal'
         )
@@ -238,8 +239,8 @@ def insert_admin_rules(table_name):
             menutype='addtabs',
             extend=None,
             model_name=model_name,
-            createtime=now(),
-            updatetime=now(),
+            created_at=now(),
+            updated_at=now(),
             weigh=0,
             status='normal'
         )
@@ -257,8 +258,8 @@ def insert_admin_rules(table_name):
             menutype='addtabs',
             extend=None,
             model_name=model_name,
-            createtime=now(),
-            updatetime=now(),
+            created_at=now(),
+            updated_at=now(),
             weigh=0,
             status='normal'
         )
